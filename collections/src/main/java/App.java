@@ -18,12 +18,11 @@ public class App {
         Path pathToTextFile = Paths.get("collections/src/main/java/words.txt");
 
         Stream<String> fileReadedFromScanner = csvFileReader.readFileWithScanner(pathToCsvFile.toString(), ";").stream();
-        Stream<String> fileReadedWithStream = csvFileReader.readFileWithStream(pathToCsvFile.toString());
-        
+    
         List<String> sortedFileReadedFromScanner = fileReadedFromScanner.sorted().collect(Collectors.toList());
-        List<String> sortedFileReadedWithStream = fileReadedWithStream.sorted().collect(Collectors.toList());
+    
        
-        Stream<String> readedWords = csvFileReader.readFileWithStream(pathToTextFile.toString());
+        Stream<String> readedWords = csvFileReader.readTextFileWithStream(pathToTextFile.toString());
         List<String> words = readedWords.collect(Collectors.toList());
         LinkedList<String> wordsLinkedList = new LinkedList<>(words);
 

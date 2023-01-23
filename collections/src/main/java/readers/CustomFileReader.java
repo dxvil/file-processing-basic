@@ -11,11 +11,17 @@ import java.util.stream.Stream;
 
 public class CustomFileReader {
 
-    public Stream<String> readFileWithStream(String path) {
+    public Stream<String> readTextFileWithStream(String path) throws IllegalArgumentException {
         Stream<String> stream = null;
+     
+        if(path.contains("csv")) {
+            throw new IllegalArgumentException("The file is csv extension, cannot cover with this method yet");
+        }
+
         try {
             Path filePath = Paths.get(path);
             stream = Files.readAllLines(filePath).stream();
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -28,7 +34,7 @@ public class CustomFileReader {
         Scanner reader = null;
         try {
             File fileToRead = new File(path);
-            System.out.println(fileToRead.exists());
+            
             reader = new Scanner(fileToRead).useDelimiter(delimiter);
     
             while(reader.hasNext()) {
