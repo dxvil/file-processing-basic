@@ -2,30 +2,41 @@ package readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class CustomFileReader {
 
-    public Stream<String> readTextFileWithStream(String path) throws IllegalArgumentException {
-        Stream<String> stream = null;
-     
-        if(path.contains("csv")) {
-            throw new IllegalArgumentException("The file is csv extension, cannot cover with this method yet");
-        }
-
+    public List<String> readTextFile(String path, String delimiter) throws IllegalArgumentException {
+        ArrayList<String> finalResult = new ArrayList<>();
         try {
             Path filePath = Paths.get(path);
-            stream = Files.readAllLines(filePath).stream();
+
+            List<String> readedLines = Files.readAllLines(filePath);
+            
+            if(Files.lines(filePath).count() == readedLines.size() && (!readedLines.stream().anyMatch(str -> str.contains(delimiter)))) {
+                return readedLines;
+            } 
+
+            for(String line:readedLines) {
+                String[] words = line.split(delimiter);
+
+                for(String word:words) {
+                            finalResult.add(word);
+                }
+            }
+
+            return finalResult;
             
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return stream;
+        return finalResult;
     }
 
     public ArrayList<String> readFileWithScanner(String path, String delimiter) throws Exception {

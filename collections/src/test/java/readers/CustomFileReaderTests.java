@@ -2,13 +2,11 @@ package readers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,37 +56,24 @@ public class CustomFileReaderTests {
         assertEquals(0, result.size());
     }
 
-    @Test
-    @DisplayName("Reading a csv file with read all lines and get a stream")
-    void readFileWithStreamCsv() throws IllegalArgumentException {
-        Exception thrown = assertThrows(IllegalArgumentException.class, () -> {
-            customFileReader.readTextFileWithStream(pathToCsvFile);
-        });
-
-        assertEquals(
-            "The file is csv extension, cannot cover with this method yet",
-            thrown.getMessage()
-        );
-        
-    }
 
     @Test
     @DisplayName("Reading a text file with read all lines and get a stream")
     void readFileWithStreamTxt() {
-        Stream<String> result = customFileReader.readTextFileWithStream(pathToTextFile);
+        List<String> result = customFileReader.readTextFile(pathToTextFile, "\\n");
 
-        assertEquals(69, result.collect(Collectors.toList()).size());
+        assertEquals(69, result.stream().collect(Collectors.toList()).size());
         assertNotNull(result);
-        assertTrue(result instanceof Stream);
+        assertTrue(result instanceof List);
     }
 
     @Test
     @DisplayName("Reading an empty text file with read all lines and get a stream")
     void readFileWithStreamEmptyTxt() {
-        Stream<String> result = customFileReader.readTextFileWithStream(pathToEmptyTxtFile);
+        List<String> result = customFileReader.readTextFile(pathToEmptyTxtFile, "\\n");
 
-        assertEquals(0, result.collect(Collectors.toList()).size());
+        assertEquals(0, result.stream().collect(Collectors.toList()).size());
         assertNotNull(result);
-        assertTrue(result instanceof Stream);
+        assertTrue(result instanceof List);
     }
 }
